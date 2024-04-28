@@ -1,7 +1,7 @@
 from urllib import request
 from django.shortcuts import render
 from django.utils import timezone
-from .models import Post
+from .models import Post, Category
 from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
 from django.shortcuts import redirect
@@ -44,3 +44,17 @@ def post_edit(request, slug):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
+
+
+
+def category_list(request):
+    print("cat")
+    categories = Category.objects.filter(creation_date__lte=timezone.now()).order_by('creation_date')
+    return render(request, 'blog/category_list.html', {'categories': categories})
+
+
+def category_details(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    posts = category.post_set.all()
+    return render(request, 'blog/category_details.html', {'category': category, 'posts': posts})

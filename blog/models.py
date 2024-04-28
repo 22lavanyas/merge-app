@@ -5,13 +5,28 @@ from .utils import generate_slug
 import uuid
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+    creation_date = models.DateTimeField(blank=True, null=True)
+    slug = models.SlugField(unique=True, default=uuid.uuid1)
+
+    def str(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        self.slug = generate_slug(self.name)
+        super(Category, self).save(*args, **kwargs);
+    
+    
+
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
-    slug = models.SlugField(unique=True, default=uuid.uuid1)    
+    slug = models.SlugField(unique=True, default=uuid.uuid1)   
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True) 
 
     def publish(self):
         self.published_date = timezone.now()
@@ -23,4 +38,6 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         self.slug = generate_slug(self.title)
         super(Post, self).save(*args, **kwargs);
+
+
 
