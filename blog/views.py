@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import AnonymousUser
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.select_related('category').filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request, slug):
