@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV=$(cygpath "C:/Users/Lavanya Sharma/Downloads/merge-app-master/merge-app-master/env")
+VIRTUAL_ENV=$(cygpath "C:\Users\Lavanya Sharma\Downloads\tags_tak\merge-app-master\env")
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

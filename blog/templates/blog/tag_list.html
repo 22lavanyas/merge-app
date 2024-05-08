@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %} {% block content %}
+<form id="tagForm" action="">
+  {% for tag in tags %}
+  <article class="post">
+    <h2 class="tag-label">
+      <a href="#" data-tag-id="{{ tag.id }}">{{ tag.name }}</a>
+    </h2>
+  </article>
+  {% endfor %}
+</form>
+
+<script>
+  const tagLinks = document.querySelectorAll(".tag-label a");
+
+  tagLinks.forEach((link) => {
+    link.addEventListener("click", function (event) {
+      event.preventDefault();
+      const tagId = this.dataset.tagId;
+      window.location.href = `/posts/?tags=${tagId}`;
+    });
+  });
+</script>
+{% endblock %}

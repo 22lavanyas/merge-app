@@ -5,5 +5,11 @@
   <!-- <p>{{ post.text|linebreaksbr }}</p> -->
   <p style="word-wrap: break-word">{{ post.text|linebreaksbr|safe }}</p>
   <p>Category: {{ post.category.name }}</p>
+  <p>Tags:
+    {% for tag in post.tag.all %}
+    {{ tag.name }}
+    {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
 </article>
 {% endfor %} {% endblock %}

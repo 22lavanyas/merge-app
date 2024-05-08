@@ -4,6 +4,18 @@ from django.utils import timezone
 from .utils import generate_slug
 import uuid
 
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+    creation_date = models.DateTimeField(blank=True, null=True)
+    # slug = models.SlugField(unique=True, default=uuid.uuid1)
+
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        # self.slug = generate_slug(self.name)
+        super(Tag, self).save(*args, **kwargs);
+
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -27,6 +39,7 @@ class Post(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     slug = models.SlugField(unique=True, default=uuid.uuid1)   
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True) 
+    tag = models.ManyToManyField(Tag, related_name='posts')
 
     def publish(self):
         self.published_date = timezone.now()
